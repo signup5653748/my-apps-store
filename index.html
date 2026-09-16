@@ -3,121 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Apps</title>
+<title>App Shelf</title>
 <style>
   :root {
-    --bg: #f5f5f7;
-    --card-bg: #ffffff;
-    --text: #1c1c1e;
-    --muted: #6e6e73;
-    --accent: #0071e3;
-    --border: #e5e5ea;
+    --paper: #FAF8F4;
+    --panel: #FFFFFF;
+    --ink: #1A1A18;
+    --slate: #6B6A65;
+    --line: #E7E3DA;
+    --amber: #D98E2B;
+    --amber-ink: #5C3B0F;
+    --radius: 18px;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0b0b0d;
-      --card-bg: #1c1c1e;
-      --text: #f5f5f7;
-      --muted: #a1a1a6;
-      --accent: #409cff;
-      --border: #2c2c2e;
+      --paper: #131311;
+      --panel: #1B1A17;
+      --ink: #F4F1EA;
+      --slate: #A3A099;
+      --line: #322F29;
+      --amber: #E8A33D;
+      --amber-ink: #1A1108;
     }
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    padding: 32px 16px 64px;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--paper);
+    color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  header {
-    max-width: 900px;
-    margin: 0 auto 32px;
-    text-align: center;
+  .wrap { max-width: 920px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  header { margin-bottom: 40px; }
+  .wordmark {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
   }
-  header h1 { font-size: 28px; margin: 0 0 8px; }
-  header p { color: var(--muted); margin: 0; font-size: 15px; }
+  .wordmark span { color: var(--amber); }
+  header p {
+    margin: 0;
+    color: var(--slate);
+    font-size: 15px;
+    max-width: 46ch;
+  }
+
   .grid {
-    max-width: 900px;
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
   }
+
   .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
-  .card h2 { font-size: 17px; margin: 0; }
-  .card .meta { color: var(--muted); font-size: 13px; }
-  .card .btn {
-    margin-top: 12px;
-    display: inline-block;
-    text-align: center;
-    background: var(--accent);
-    color: white;
+
+  .card-top { display: flex; align-items: center; gap: 12px; }
+
+  .icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 19px;
+    color: #fff;
+  }
+
+  .card-title h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .card-title .tagline {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 1.3;
+  }
+
+  .meta {
+    font-size: 12.5px;
+    color: var(--slate);
+    display: flex;
+    gap: 10px;
+  }
+
+  .install {
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--amber);
+    color: var(--amber-ink);
     text-decoration: none;
-    padding: 10px 16px;
+    padding: 10px 14px;
     border-radius: 10px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
   }
-  .empty, .error {
-    max-width: 900px;
-    margin: 0 auto;
+  .install:active { opacity: 0.85; }
+
+  .state {
     text-align: center;
-    color: var(--muted);
-    padding: 48px 16px;
+    color: var(--slate);
+    padding: 60px 16px;
+    font-size: 15px;
   }
 </style>
 </head>
 <body>
-  <header>
-    <h1>My Apps</h1>
-    <p>Latest builds, updated whenever I publish a new release.</p>
-  </header>
-  <div id="grid" class="grid"></div>
-  <div id="empty" class="empty" style="display:none;">No apps published yet — check back soon.</div>
-  <div id="error" class="error" style="display:none;">Couldn't load the app list right now.</div>
+  <div class="wrap">
+    <header>
+      <h1 class="wordmark">App <span>Shelf</span></h1>
+      <p>Independently built apps, published straight from source. Pick one up.</p>
+    </header>
+
+    <div id="grid" class="grid"></div>
+    <div id="state" class="state" style="display:none;"></div>
+  </div>
 
   <script>
-    fetch('apps.json', { cache: 'no-store' })
-      .then(res => {
-        if (!res.ok) throw new Error('apps.json not found');
-        return res.json();
-      })
-      .then(apps => {
-        const grid = document.getElementById('grid');
-        if (!apps.length) {
-          document.getElementById('empty').style.display = 'block';
-          return;
-        }
-        apps.forEach(app => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
-            <h2>${escapeHtml(app.name)}</h2>
-            <div class="meta">Version ${escapeHtml(app.version)} · ${escapeHtml(app.date)}</div>
-            <a class="btn" href="${escapeHtml(app.download_url)}" download>Download APK</a>
-          `;
-          grid.appendChild(card);
-        });
-      })
-      .catch(() => {
-        document.getElementById('error').style.display = 'block';
-      });
+    const AMBER_SHADES = ['#D98E2B', '#4C6E5D', '#8A5A44', '#3F5C76', '#946B3F', '#5B6B8C'];
+
+    function hashColor(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h);
+      return AMBER_SHADES[Math.abs(h) % AMBER_SHADES.length];
+    }
 
     function escapeHtml(str) {
       const div = document.createElement('div');
       div.textContent = str ?? '';
       return div.innerHTML;
     }
+
+    function renderIcon(app) {
+      if (app.icon_url) {
+        return `<img class="icon" src="${escapeHtml(app.icon_url)}" alt="">`;
+      }
+      const letter = (app.name || '?').trim().charAt(0).toUpperCase();
+      const color = hashColor(app.name || app.id || '?');
+      return `<div class="icon" style="background:${color};">${escapeHtml(letter)}</div>`;
+    }
+
+    fetch('apps.json', { cache: 'no-store' })
+      .then(res => {
+        if (!res.ok) throw new Error('missing');
+        return res.json();
+      })
+      .then(apps => {
+        const grid = document.getElementById('grid');
+        const state = document.getElementById('state');
+
+        if (!apps.length) {
+          state.textContent = 'No apps published yet — check back soon.';
+          state.style.display = 'block';
+          return;
+        }
+
+        apps.forEach(app => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="card-top">
+              ${renderIcon(app)}
+              <div class="card-title">
+                <h2>${escapeHtml(app.name)}</h2>
+                ${app.tagline ? `<p class="tagline">${escapeHtml(app.tagline)}</p>` : ''}
+              </div>
+            </div>
+            <div class="meta">
+              <span>v${escapeHtml(app.version)}</span>
+              <span>${escapeHtml(app.date)}</span>
+            </div>
+            <a class="install" href="${escapeHtml(app.download_url)}" download>Install</a>
+          `;
+          grid.appendChild(card);
+        });
+      })
+      .catch(() => {
+        const state = document.getElementById('state');
+        state.textContent = "Couldn't load the app list right now.";
+        state.style.display = 'block';
+      });
   </script>
 </body>
 </html>
