@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "clearview-reader",
+    "name": "ClearView Accessible Reader ",
+    "version": "v10",
+    "date": "2026-09-16",
+    "download_url": "https://github.com/signup5653748/my-apps-store/releases/download/clearview-reader-latest/ClearView-Accessible-Reader-v10.apk",
+    "source_repo": "signup5653748/ClearView-Accessible-Reader"
+  }
+]
