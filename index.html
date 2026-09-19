@@ -6,112 +6,146 @@
 <title>Apps</title>
 <style>
   :root {
-    --bone: #F1EEE6;
+    --bone: #F3F1EA;
     --panel: #FFFFFF;
-    --graphite: #1C1D1B;
-    --slate: #6E6C64;
-    --line: #DEDACD;
+    --ink: #191A18;
+    --slate: #6E6C63;
+    --line: #E3DFD3;
     --teal: #1F5C52;
+    --teal-deep: #163F38;
     --teal-ink: #FFFFFF;
+    --shadow: 0 1px 2px rgba(25,26,24,0.04), 0 8px 20px -12px rgba(25,26,24,0.12);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bone: #16181A;
-      --panel: #16181A;
-      --graphite: #EDEBE3;
-      --slate: #9C9A90;
-      --line: #2C2E29;
+      --bone: #121412;
+      --panel: #1A1C19;
+      --ink: #F0EEE6;
+      --slate: #9B988E;
+      --line: #2B2D28;
       --teal: #4F9C8E;
+      --teal-deep: #4F9C8E;
       --teal-ink: #0C1513;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 20px -12px rgba(0,0,0,0.5);
     }
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
     background: var(--bone);
-    color: var(--graphite);
+    color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 680px; margin: 0 auto; padding: 44px 20px 90px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 20px 90px; }
 
-  header { margin-bottom: 30px; }
+  header { margin-bottom: 36px; }
+  .eyebrow {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
   header h1 {
-    font-size: 21px;
+    font-size: 26px;
     font-weight: 800;
-    letter-spacing: -0.01em;
-    margin: 0 0 6px;
+    letter-spacing: -0.015em;
+    margin: 0 0 8px;
   }
   header p {
     margin: 0;
     color: var(--slate);
-    font-size: 14.5px;
+    font-size: 15px;
+    max-width: 52ch;
+    line-height: 1.5;
   }
 
-  .list {
-    border-top: 1px solid var(--line);
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
   }
 
-  .row {
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: var(--shadow);
     display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    gap: 16px;
   }
+
+  .card-head { display: flex; align-items: flex-start; gap: 13px; }
 
   .icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
     flex-shrink: 0;
     object-fit: cover;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 17px;
+    font-size: 19px;
     color: #fff;
   }
 
-  .info { flex: 1; min-width: 0; }
-  .info h2 {
+  .card-text { min-width: 0; }
+  .card-text h2 {
     margin: 0;
-    font-size: 15.5px;
+    font-size: 16.5px;
     font-weight: 700;
     line-height: 1.3;
   }
-  .info .tagline {
-    margin: 2px 0 0;
+  .card-text .tagline {
+    margin: 3px 0 0;
     font-size: 13px;
     color: var(--slate);
-    line-height: 1.35;
+    line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-  .info .meta {
-    margin: 4px 0 0;
-    font-size: 12px;
-    color: var(--slate);
+
+  .divider { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
 
+  .meta {
+    font-size: 12px;
+    color: var(--slate);
+    line-height: 1.4;
+  }
+  .meta strong { color: var(--ink); font-weight: 600; }
+
   .install {
-    flex-shrink: 0;
-    display: inline-flex;
+    width: 100%;
+    display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     background: var(--teal);
     color: var(--teal-ink);
     text-decoration: none;
-    padding: 9px 16px;
-    border-radius: 999px;
-    font-size: 13.5px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
     font-weight: 700;
   }
-  .install:active { opacity: 0.85; }
+  .install:active { background: var(--teal-deep); }
+  .install svg { width: 15px; height: 15px; flex-shrink: 0; }
 
   .state {
     text-align: center;
@@ -124,11 +158,12 @@
 <body>
   <div class="wrap">
     <header>
+      <p class="eyebrow">App library</p>
       <h1>Apps</h1>
-      <p>Independently built, published straight from source.</p>
+      <p>Independently built, signed, and published straight from source — pick one up below.</p>
     </header>
 
-    <div id="list" class="list"></div>
+    <div id="grid" class="grid"></div>
     <div id="state" class="state" style="display:none;"></div>
   </div>
 
@@ -156,13 +191,15 @@
       return `<div class="icon" style="background:${color};">${escapeHtml(letter)}</div>`;
     }
 
+    const DOWNLOAD_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>';
+
     fetch('apps.json', { cache: 'no-store' })
       .then(res => {
         if (!res.ok) throw new Error('missing');
         return res.json();
       })
       .then(apps => {
-        const list = document.getElementById('list');
+        const grid = document.getElementById('grid');
         const state = document.getElementById('state');
 
         if (!apps.length) {
@@ -172,18 +209,23 @@
         }
 
         apps.forEach(app => {
-          const row = document.createElement('div');
-          row.className = 'row';
-          row.innerHTML = `
-            ${renderIcon(app)}
-            <div class="info">
-              <h2>${escapeHtml(app.name)}</h2>
-              ${app.tagline ? `<p class="tagline">${escapeHtml(app.tagline)}</p>` : ''}
-              <p class="meta">Version ${escapeHtml(app.version)}, updated ${escapeHtml(app.date)}</p>
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="card-head">
+              ${renderIcon(app)}
+              <div class="card-text">
+                <h2>${escapeHtml(app.name)}</h2>
+                ${app.tagline ? `<p class="tagline">${escapeHtml(app.tagline)}</p>` : ''}
+              </div>
             </div>
-            <a class="install" href="${escapeHtml(app.download_url)}" download>Install</a>
+            <hr class="divider">
+            <div class="card-footer">
+              <div class="meta"><strong>v${escapeHtml(app.version)}</strong><br>Updated ${escapeHtml(app.date)}</div>
+            </div>
+            <a class="install" href="${escapeHtml(app.download_url)}" download>${DOWNLOAD_ICON} Download APK</a>
           `;
-          list.appendChild(row);
+          grid.appendChild(card);
         });
       })
       .catch(() => {
